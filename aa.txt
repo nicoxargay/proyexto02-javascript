@@ -1,0 +1,51 @@
+Idea negocio digital:
+
+formato: vender perfumes arabes
+
+Que producto desearia añadir al carrito?
+
+1- Afnan 9pm
+2- Lattafa Khamrah
+3- Honor & Glory
+4- Amber Oud Gold Edition
+5- Lattafa Yara rose
+6- Salir
+7- Continuar con la compra
+
+-----------------------------------------------------
+Si aprieta 1,2,3,4,5 = sumarlo al caerrito y preguntar nuevamente
+Si aprieta 6 = Sale de la seleccion
+Si no pone ningun numero o pone un numero mas alto = alerta de que ese dato no es valido y repreguntar
+Si aprieta 7 = Perfecto, su total es de $$$$, Desea seguir con la compra?
+
+1- Si, continuar
+2- No, salir  
+-----------------------------------------------------
+
+Si aprieta 2 = se cancela todo
+
+Si aprieta 1 = Indique su nombre y apellido
+
+promt para que escriba su nombre y apellido
+
+-----------------------------------------------------
+
+Como desea pagar? 
+
+1- Tarjeta de credito
+2- Tarjeta de debito
+3- Transferencia
+-----------------------------------------------------
+
+Si aprieta 1,2 o 3 = Por donde prefiere ser contactado para concluir pago y envio?
+
+1- Mail
+2- Whatsapp
+-----------------------------------------------------
+Si aprieta 1 = Promt pidiendo que indique su email
+Si aprieta 2= Promt pidiendo que indique su numero de telefono
+-----------------------------------------------------
+
+Por ultimo, una alerta que diga: 
+
+¡Felicitaciones, (nombre + apellido)!, su compra se ha hecho con exito, en la brevedad lo contactaremos para cerrar el pago y el envio. ¡Saludos!
