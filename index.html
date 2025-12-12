@@ -1,142 +1,133 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfumería Árabe | Simulador</title>
-    <link rel="stylesheet" href="assets/css/estilos.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body>
     <header class="encabezado">
-    <div class="encabezado__contenido">
-        <p class="encabezado__subtitulo">Simulador de compra</p>
-        <h1>Perfumería Árabe</h1>
-        <p class="encabezado__descripcion">
-        Armá tu carrito, elegí cómo pagar y dejá tus datos para coordinar la compra.
-        </p>
-    </div>
+        <div class="encabezado__contenido">
+            <p class="encabezado__subtitulo">Simulador de compra</p>
+            <h1>Perfumería Árabe</h1>
+            <p class="encabezado__descripcion">
+                Armá tu carrito, elegí cómo pagar y dejá tus datos para coordinar la compra.
+            </p>
+        </div>
     </header>
 
     <main class="contenedor">
-    
-    <!-- Catálogo -->
-    <section class="tarjeta">
-        <div class="seccion-titulo">
-        <div>
-            <p class="seccion-titulo__subtitulo">Fragancias disponibles</p>
-            <h2>Catálogo</h2>
-        </div>
 
-        <p class="seccion-titulo__texto">
-            Hacé clic en un perfume para agregarlo al carrito.
-        </p>
-        </div>
+        <!-- Catálogo -->
+        <section class="tarjeta">
+            <div class="seccion-titulo">
+                <div>
+                    <p class="seccion-titulo__subtitulo">Fragancias disponibles</p>
+                    <h2>Catálogo</h2>
+                </div>
 
-        <div id="lista-productos" class="grilla-productos" aria-live="polite"></div>
-    </section>
+                <p class="seccion-titulo__texto">
+                    Hacé clic en un perfume para agregarlo al carrito.
+                </p>
+            </div>
 
-    <!-- Carrito -->
-    <section class="tarjeta" aria-live="polite">
-        <div class="seccion-titulo">
-        <div>
-            <p class="seccion-titulo__subtitulo">Tu selección</p>
-            <h2>Carrito</h2>
-        </div>
-        </div>
+            <div id="lista-productos" class="grilla-productos" aria-live="polite"></div>
+        </section>
 
-        <p id="carrito-vacio" class="texto-vacio">Todavía no agregaste perfumes.</p>
+        <!-- Carrito -->
+        <section class="tarjeta" aria-live="polite">
+            <div class="seccion-titulo">
+                <div>
+                    <p class="seccion-titulo__subtitulo">Tu selección</p>
+                    <h2>Carrito</h2>
+                </div>
+            </div>
 
-        <ul id="carrito-items" class="carrito-items"></ul>
-        <div class="carrito-resumen">
-        <span>Total</span>
-        <strong id="carrito-total">$0</strong>
-        </div>
+            <p id="carrito-vacio" class="texto-vacio">Todavía no agregaste perfumes.</p>
 
-        <div class="carrito-acciones">
-        <button id="vaciar-carrito" type="button" class="boton boton--secundario" disabled>
-            Vaciar carrito</button>
+            <ul id="carrito-items" class="carrito-items"></ul>
+            <div class="carrito-resumen">
+                <span>Total</span>
+                <strong id="carrito-total">$0</strong>
+            </div>
 
-        <p class="carrito-aclaracion">
-            Podés cambiar cantidades con + y -
-        </p>
-        </div>
-    </section>
+            <div class="carrito-acciones">
+                <button id="vaciar-carrito" type="button" class="boton boton--secundario" disabled>
+                    Vaciar carrito</button>
 
-    <!-- Formulario -->
-    <section class="tarjeta">
-        <div class="seccion-titulo">
-        <div>
-            <p class="seccion-titulo__subtitulo">Último paso</p>
-            <h2>Datos de contacto</h2>
-        </div>
-        </div>
+                <p class="carrito-aclaracion">
+                    Podés cambiar cantidades con + y -
+                </p>
+            </div>
+        </section>
 
-        <form id="form-compra" class="formulario">
+        <!-- Formulario -->
+        <section class="tarjeta">
+            <div class="seccion-titulo">
+                <div>
+                    <p class="seccion-titulo__subtitulo">Último paso</p>
+                    <h2>Datos de contacto</h2>
+                </div>
+            </div>
 
-        <label>
-            Nombre y apellido
-            <input
-            type="text"
-            id="cliente-nombre"
-            name="clienteNombre"
-            placeholder="Ej: Juan Pérez"
-            required
-            >
-        </label>
+            <form id="form-compra" class="formulario">
 
-        <label>
-            Medio de pago
-            <select id="medio-pago" name="medioPago" required>
-            <option value="">Elegí una opción</option>
-            <option value="Tarjeta de crédito">Tarjeta de crédito</option>
-            <option value="Tarjeta de débito">Tarjeta de débito</option>
-            <option value="Transferencia">Transferencia</option>
-            </select>
-        </label>
+                <label>
+                    Nombre y apellido
+                    <input type="text" id="cliente-nombre" name="clienteNombre" placeholder="Ej: Juan Pérez" required>
+                </label>
 
-        <fieldset class="formulario__grupo">
-            <legend>¿Cómo te contactamos?</legend>
+                <label>
+                    Medio de pago
+                    <select id="medio-pago" name="medioPago" required>
+                        <option value="">Elegí una opción</option>
+                        <option value="Tarjeta de crédito">Tarjeta de crédito</option>
+                        <option value="Tarjeta de débito">Tarjeta de débito</option>
+                        <option value="Transferencia">Transferencia</option>
+                    </select>
+                </label>
 
-            <label class="radio">
-            <input type="radio" name="contactoMedio" value="mail">
-            Mail
-            </label>
+                <fieldset class="formulario__grupo">
+                    <legend>¿Cómo te contactamos?</legend>
 
-            <label class="radio">
-            <input type="radio" name="contactoMedio" value="whatsapp">
-            Whatsapp
-            </label>
-        </fieldset>
+                    <label class="radio">
+                        <input type="radio" name="contactoMedio" value="mail">
+                        Mail
+                    </label>
 
-        <label>
-            Dato de contacto
-            <input
-            type="text"
-            id="contacto-valor"
-            name="contactoValor"
-            placeholder="Elegí antes un método"
-            disabled
-            >
-        </label>
+                    <label class="radio">
+                        <input type="radio" name="contactoMedio" value="whatsapp">
+                        Whatsapp
+                    </label>
+                </fieldset>
 
-        <button class="boton boton--principal" type="submit">
-            Confirmar compra
-        </button>
-        </form>
+                <label>
+                    Dato de contacto
+                    <input type="text" id="contacto-valor" name="contactoValor" placeholder="Elegí antes un método"
+                        disabled>
+                </label>
 
-        <div id="mensaje-formulario" class="estado" aria-live="polite"></div>
+                <button class="boton boton--principal" type="submit">
+                    Confirmar compra
+                </button>
+            </form>
 
-        <div id="resumen-compra" class="resumen" aria-live="polite"></div>
-    </section>
+            <div id="mensaje-formulario" class="estado" aria-live="polite"></div>
+
+            <div id="resumen-compra" class="resumen" aria-live="polite"></div>
+        </section>
 
     </main>
 
     <footer class="pie">
-    <p>Simulador académico - Comisión JavaScript</p>
-    <p>Tus datos se guardan en el navegador para continuar cuando quieras.</p>
+        <p>Simulador académico - Comisión JavaScript</p>
+        <p>Tus datos se guardan en el navegador para continuar cuando quieras.</p>
     </footer>
 
     <script src="assets/js/app.js" defer></script>
 </body>
+
 </html>
