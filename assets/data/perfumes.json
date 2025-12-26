@@ -1,0 +1,7 @@
+[
+    { "id": 1, "nombre" : "Afnan 9pm", "precio": 60000 },
+    { "id": 2, "nombre" : "Lattafa Khamrah", "precio": 48000 },
+    { "id": 3, "nombre" : "Honor & Glory", "precio": 48000 },
+    { "id": 4, "nombre" : "Amber Oud Gold Edition", "precio": 70000 },
+    { "id": 5, "nombre" : "Lattafa Yara Rose", "precio" : 43000 }
+]

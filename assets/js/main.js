@@ -1,10 +1,10 @@
-const perfumes = [
-  { id: 1, nombre: "Afnan 9pm", precio: 60000 },
-  { id: 2, nombre: "Lattafa Khamrah", precio: 48000 },
-  { id: 3, nombre: "Honor & Glory", precio: 48000 },
-  { id: 4, nombre: "Amber Oud Gold Edition", precio: 70000 },
-  { id: 5, nombre: "Lattafa Yara Rose", precio: 43000 }
-];
+let perfumes = [];
+
+async function cargarPerfumes() {
+  const res = await fetch("./assets/data/perfumes.json");
+  if (!res.ok) throw new Error("No se pudo cargar el JSON");
+  perfumes = await res.json();
+}
 
 const CLAVE_CARRITO = "carritoPerfumeria";
 const CLAVE_ULTIMA_COMPRA = "ultimaCompraPerfumeria";
@@ -33,7 +33,7 @@ function iniciar() {
 }
 
 function configurarEventos() {
-  botonVaciarCarrito.addEventListener("click", () => vaciarCarrito());
+  botonVaciarCarrito.addEventListener("click", confirmarVaciado);
   formularioCompra.addEventListener("submit", enviarFormulario);
 
   const radios = formularioCompra.querySelectorAll('input[name="contactoMedio"]');
@@ -68,7 +68,6 @@ function mostrarProductos() {
     `;
 
     tarjeta.querySelector("button").addEventListener("click", () => agregarAlCarrito(perfume.id));
-
     listaProductos.appendChild(tarjeta);
   });
 }
@@ -78,13 +77,21 @@ function agregarAlCarrito(id) {
   const existente = carrito.find(p => p.id === id);
 
   if (existente) {
-    existente.cantidad += 1;
+    existente.cantidad++;
   } else {
     carrito.push({ ...producto, cantidad: 1 });
   }
 
   actualizarCarrito();
-  mostrarMensaje(`${producto.nombre} agregado al carrito.`);
+
+  Swal.fire({
+    toast: true,
+    position: "top-end",
+    icon: "success",
+    title: `${producto.nombre} agregado`,
+    showConfirmButton: false,
+    timer: 2000
+  });
 }
 
 function incrementar(id) {
@@ -108,7 +115,24 @@ function decrementar(id) {
 function vaciarCarrito(silencioso = false) {
   carrito = [];
   actualizarCarrito();
-  if (!silencioso) mostrarMensaje("Carrito vaciado.");
+}
+
+async function confirmarVaciado() {
+  if (!carrito.length) return;
+
+  const result = await Swal.fire({
+    title: "¿Vaciar carrito?",
+    text: "Se eliminarán todos los productos",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, vaciar",
+    cancelButtonText: "Cancelar"
+  });
+
+  if (result.isConfirmed) {
+    vaciarCarrito();
+    Swal.fire("Carrito vacío", "", "success");
+  }
 }
 
 function mostrarCarrito() {
@@ -137,7 +161,6 @@ function mostrarCarrito() {
       `;
 
       const [restar, sumar] = fila.querySelectorAll(".boton-cantidad");
-
       restar.addEventListener("click", () => decrementar(item.id));
       sumar.addEventListener("click", () => incrementar(item.id));
 
@@ -168,7 +191,7 @@ function enviarFormulario(e) {
   e.preventDefault();
 
   if (!carrito.length) {
-    mostrarMensaje("Agregá un perfume antes de confirmar la compra.", "error");
+    Swal.fire("Agregá un perfume antes de comprar", "", "error");
     return;
   }
 
@@ -178,42 +201,20 @@ function enviarFormulario(e) {
   const datoContacto = inputContacto.value.trim();
 
   if (!nombre || /\d/.test(nombre)) {
-    mostrarMensaje("Ingresá un nombre válido.", "error");
+    Swal.fire("Nombre inválido", "", "error");
     return;
   }
 
-  if (!medioPago) {
-    mostrarMensaje("Elegí un medio de pago.", "error");
+  if (!medioPago || !medioContacto || !datoContacto) {
+    Swal.fire("Completá todos los datos", "", "error");
     return;
   }
-
-  if (!medioContacto) {
-    mostrarMensaje("Elegí cómo querés que te contactemos.", "error");
-    return;
-  }
-
-  if (!datoContacto) {
-    mostrarMensaje("Completá el dato de contacto.", "error");
-    return;
-  }
-
-  if (medioContacto === "mail" && !datoContacto.includes("@")) {
-    mostrarMensaje("Ingresá un mail válido.", "error");
-    return;
-  }
-
-  if (medioContacto === "whatsapp" && !/^[\d\s+-]{6,}$/.test(datoContacto)) {
-    mostrarMensaje("Ingresá un número válido.", "error");
-    return;
-  }
-
-  const total = formatoPesos.format(
-    carrito.reduce((a, p) => a + p.precio * p.cantidad, 0)
-  );
 
   const compra = {
     cliente: nombre,
-    total,
+    total: formatoPesos.format(
+      carrito.reduce((a, p) => a + p.precio * p.cantidad, 0)
+    ),
     medioPago,
     contacto: medioContacto === "mail" ? "Mail" : "Whatsapp",
     datoContacto,
@@ -226,7 +227,8 @@ function enviarFormulario(e) {
 
   mostrarResumen(compra);
   localStorage.setItem(CLAVE_ULTIMA_COMPRA, JSON.stringify(compra));
-  mostrarMensaje(`¡Gracias ${nombre}! Te vamos a contactar por ${compra.contacto}.`, "exito");
+
+  Swal.fire("Compra realizada", `Gracias ${nombre}`, "success");
 
   formularioCompra.reset();
   inputContacto.disabled = true;
@@ -244,9 +246,9 @@ function mostrarResumen(compra) {
     <p><strong>Contacto:</strong> ${compra.contacto} - ${compra.datoContacto}</p>
     <h4>Productos</h4>
     <ul>
-      ${compra.productos
-        .map(p => `<li>${p.nombre} x${p.cantidad} (${p.subtotal})</li>`)
-        .join("")}
+      ${compra.productos.map(p =>
+        `<li>${p.nombre} x${p.cantidad} (${p.subtotal})</li>`
+      ).join("")}
     </ul>
   `;
 }
@@ -254,21 +256,14 @@ function mostrarResumen(compra) {
 function restaurarCompra() {
   const guardado = localStorage.getItem(CLAVE_ULTIMA_COMPRA);
   if (!guardado) return;
-  const compra = JSON.parse(guardado);
-  mostrarResumen(compra);
+  mostrarResumen(JSON.parse(guardado));
 }
 
-function mostrarMensaje(texto, tipo = "info") {
-  mensajeFormulario.textContent = texto;
-  mensajeFormulario.className = "estado";
-
-  if (tipo === "exito") {
-    mensajeFormulario.classList.add("estado--exito");
-  } else if (tipo === "error") {
-    mensajeFormulario.classList.add("estado--error");
-  }
+async function iniciarApp() {
+  await cargarPerfumes();
+  iniciar();
 }
 
 if (listaProductos) {
-  iniciar();
+  iniciarApp();
 }
